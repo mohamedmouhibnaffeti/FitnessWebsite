@@ -19,3 +19,29 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+a {
+  display: inline-block;
+  text-decoration: none;
+  color: black;
+  font-family: sans-serif;
+}
+
+a:after {
+  display:block;
+  content: '';
+  width: inherit;
+  border-bottom: solid 3px #e53935;  
+  transform: scaleX(0);  
+  transition: transform 250ms ease-in-out;
+}
+
+a:hover:after { transform: scaleX(1); }
+
+a.from-left:after {
+  transform-origin: left;
+}
+
+a.from-right:after {
+  transform-origin: right;
+}

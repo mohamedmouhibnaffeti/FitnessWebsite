@@ -1,101 +1,135 @@
+"use client";
 import Image from "next/image";
+import { motion } from "framer-motion";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Autoplay } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import { useState } from "react";
+import Workout1 from "../public/assets/WorkoutImages/workout1.jpg";
+import Workout2 from "../public/assets/WorkoutImages/workout2.jpg";
+import Workout3 from "../public/assets/WorkoutImages/workout3.jpg";
+import StatsCardsHome from "@/components/Grids/StatsCardsHome";
+
+const images = [
+  {
+    src: Workout1,
+    header: "Transform Your Body",
+    subheader: "Push yourself harder every day to achieve greatness.",
+    animation: {
+      header: { opacity: 0, x: -100 },
+      subheader: { opacity: 0, x: 100 },
+      button: { opacity: 0, y: 100 },
+    },
+  },
+  {
+    src: Workout2,
+    header: "Stay Motivated",
+    subheader: "Your journey to fitness starts here.",
+    animation: {
+      header: { opacity: 0, y: -100 },
+      subheader: { opacity: 0, y: 100 },
+      button: { opacity: 0, x: 100 },
+    },
+  },
+  {
+    src: Workout3,
+    header: "Unleash Your Potential",
+    subheader: "Reach new heights with every workout.",
+    animation: {
+      header: { opacity: 0, scale: 0.8 },
+      subheader: { opacity: 0, scale: 1.2 },
+      button: { opacity: 0, scale: 1.2 },
+    },
+  },
+];
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [currentSlide, setCurrentSlide] = useState(0);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  return (
+    <div>
+      <section className="overflow-hidden">
+        <div className="container">
+          <Swiper
+            pagination={{ type: "fraction" }}
+            modules={[Navigation, Autoplay]}
+            autoplay={{ delay: 5000 }}
+            className="h-screen w-screen"
+            onSlideChange={(swiper) => setCurrentSlide(swiper.activeIndex)} // Update current slide
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            {images.map((image, index) => (
+              <SwiperSlide key={index}>
+                <AnimatedSlide
+                  image={image.src}
+                  header={image.header}
+                  subheader={image.subheader}
+                  animation={image.animation}
+                  isActive={currentSlide === index} // Pass if this slide is active
+                />
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+      </section>
+      <StatsCardsHome />
+    </div>
+  );
+}
+
+function AnimatedSlide({
+  image,
+  header,
+  subheader,
+  animation,
+  isActive,
+}: {
+  image: any;
+  header: string;
+  subheader: string;
+  animation: { header: any; subheader: any, button: any };
+  isActive: boolean;
+}) {
+  return (
+    <div className="relative h-full">
+      <Image
+        src={image}
+        alt="Workout"
+        className="w-full h-full block object-center object-cover"
+      />
+      <div className="absolute inset-0 bg-black bg-opacity-50">
+      </div>
+      <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white px-4">
+        <motion.h1
+          className="text-4xl md:text-6xl font-bold mb-4"
+          initial={animation.header}
+          animate={isActive ? { opacity: 1, x: 0, y: 0, scale: 1 } : animation.header}
+          exit={animation.header}
+          transition={{ duration: 0.8 }}
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+          {header}
+        </motion.h1>
+        <motion.p
+          className="text-lg md:text-2xl font-medium"
+          initial={animation.subheader}
+          animate={isActive ? { opacity: 1, x: 0, y: 0, scale: 1 } : animation.subheader}
+          exit={animation.subheader}
+          transition={{ duration: 0.8, delay: 0.2 }}
         >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+          {subheader}
+        </motion.p>
+        <motion.button
+          initial={animation.button}
+          animate={isActive ? { opacity: 1, x: 0, y: 0, scale: 1 } : animation.button}
+          exit={animation.button}
+          transition={{ duration: 0.8, delay: 0.2 }}
         >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+            <a href="#" className="text-white bg-red-600 hover:bg-red-700 active:bg-red-600/80 transition-all duration-150 py-2 rounded-full px-6 mt-4 font-semibold flex justify-center items-center">
+              Get Started
+            </a>
+        </motion.button>
+      </div>
     </div>
   );
 }
