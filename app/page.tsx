@@ -57,7 +57,7 @@ export default function Home() {
             modules={[Navigation, Autoplay]}
             autoplay={{ delay: 5000 }}
             className="h-screen w-screen"
-            onSlideChange={(swiper) => setCurrentSlide(swiper.activeIndex)} // Update current slide
+            onSlideChange={(swiper) => setCurrentSlide(swiper.activeIndex)}
           >
             {images.map((image, index) => (
               <SwiperSlide key={index}>
@@ -66,7 +66,7 @@ export default function Home() {
                   header={image.header}
                   subheader={image.subheader}
                   animation={image.animation}
-                  isActive={currentSlide === index} // Pass if this slide is active
+                  isActive={currentSlide === index}
                 />
               </SwiperSlide>
             ))}
@@ -74,6 +74,48 @@ export default function Home() {
         </div>
       </section>
       <StatsCardsHome />
+      <section>
+        <div>
+          <div className="container mx-auto py-12 px-4 mt-5">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="flex flex-col justify-center items-start">
+                <h1 className="text-4xl md:text-6xl font-bold mb-4">
+                  Why Choose Us?
+                </h1>
+                <p className="text-lg md:text-2xl font-medium mb-4">
+                  We are committed to helping you achieve your fitness goals.
+                  Our trainers are dedicated to helping you achieve your
+                  fitness goals. We provide a wide range of services to help you
+                  get in shape and stay healthy.
+                </p>
+                <a
+                  href="#"
+                  className="text-white bg-red-600 hover:bg-red-700 active:bg-red-600/80 transition-all duration-150 py-2 rounded-full px-6 font-semibold flex justify-center items-center"
+                >
+                  Learn More
+                </a>
+              </div>
+              <div>
+                <Image
+                  src={Workout1}
+                  alt="Workout"
+                  className="w-full h-full block object-center object-cover"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section>
+        <div className="w-full flex flex-col items-center justify-center py-12">
+          <h1 className="text-4xl md:text-4xl mb-4 font-medium">
+            What we offer
+          </h1>
+          <h1 className="text-4xl md:text-6xl font-semibold mb-4 uppercase">
+            Define your goal
+          </h1>
+        </div>
+      </section>
     </div>
   );
 }
